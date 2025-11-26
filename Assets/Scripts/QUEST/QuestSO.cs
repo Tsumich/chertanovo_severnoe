@@ -14,6 +14,8 @@ public class QuestSO : ScriptableObject
 
     [Header("Цели квеста")]
     public QuestObjective[] objectives;
+
+    public int reward;
 }
 
 public enum QuestState

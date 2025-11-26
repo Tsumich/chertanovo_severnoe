@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/VentilationMiniGame.unity
+    guid: b136c8d9c96e69942a3157b56ce045ae
+  - enabled: 1
     path: Assets/Scenes/Library.unity
     guid: fcad6f9534e4c124abab89d91ad74096
   - enabled: 1
@@ -14,9 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/main_menu.unity
     guid: ed2146091fe45db43b3b2d2e52f41d48
-  - enabled: 1
-    path: Assets/VentilationMiniGame.unity
-    guid: b136c8d9c96e69942a3157b56ce045ae
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -8,7 +8,7 @@ public class VentilationMiniGame : MonoBehaviour
 
     [Header("Настройки")]
     public int targetClicks = 15;
-    public float timeLimit = 15f;
+    public float timeLimit = 55f;
 
     [Header("UI Elements")]
     public TextMeshProUGUI clickCounterText;

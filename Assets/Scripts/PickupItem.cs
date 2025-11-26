@@ -6,15 +6,25 @@ public class PickupItem : MonoBehaviour
     public string itemName = "mop";
     public string displayName = "Швабра";
     public Sprite itemIcon;
+    //public Camera camera;
     private bool playerInRange = false;
+    private bool dialogWasShown = false; // Новый флаг
 
     void Update()
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            Inventory.Instance.AddItem(itemName, displayName, itemIcon);
-            PlayerInteraction.Instance.itemIsTaken = true;
+            Messages.Instance.showDialogWindow("Взять с собой " + displayName);
         }
+        if (playerInRange && Messages.Instance.isButtonPressed)
+        {
+            Inventory.Instance.AddItem(itemName, displayName, itemIcon);
+            PlayerInteraction.Instance.hintPanel.SetActive(false);
+            Messages.Instance.messageText.text = "Вы взяли предмет: " + displayName;
+            Debug.Log("Взяли предмет : " + displayName);
+            Messages.Instance.CloseDialogWindow();
+        }
+
     }
 
 

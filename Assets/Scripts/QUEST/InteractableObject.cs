@@ -16,9 +16,37 @@ public class InteractableObject : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            if(objectName == "Вентиляция")
+            if (objectName == "Вентиляция")
             {
-                SceneManager.LoadScene("VentilationMiniGame");
+                Debug.Log("enterLocation");
+                if(Inventory.Instance.HasItem("mop"))
+                {
+                    Debug.Log("Швабра есть ");
+                }
+                else
+                {
+                    Debug.Log("Швабры нет");
+                }
+            }
+
+            else if (objectName == "Автомат")
+            {
+                Debug.Log("вы подошли к автомату с едой");
+                Messages.Instance.showDialogWindow("Потратить деньги на коке-коку зеро?");
+                if (playerInRange && Messages.Instance.isButtonPressed)
+                {
+                    if(Inventory.Instance.coins > 15)
+                    {
+                        Inventory.Instance.coins -= 15;
+                        Messages.Instance.messageText.text = "Вы купили коке-коку зеро";
+                    }
+                    else
+                    {
+                        Messages.Instance.messageText.text = "Недостаточно денег на коке-колу зеро";
+                    }
+                    PlayerInteraction.Instance.hintPanel.SetActive(false);
+                    Messages.Instance.CloseDialogWindow();
+                }
             }
         }
     }
@@ -28,6 +56,14 @@ public class InteractableObject : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = false;
         }
     }
 }

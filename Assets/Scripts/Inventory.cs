@@ -14,7 +14,8 @@ public class Inventory : MonoBehaviour
 
     public GameObject inventoryUI;
     public bool inventoryIsVisible = false;
-    
+
+    public int coins = 0;
 
     [System.Serializable]
     public class Item
@@ -31,7 +32,6 @@ public class Inventory : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);  
         }
 
         SetInventoryVisible(false);
@@ -77,6 +77,7 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(string itemName, string displayName, Sprite icon = null)
     {
+        Debug.Log("AddItem");
         items.Add(new Item
         {
             name = itemName,

@@ -19,7 +19,7 @@ public class QuestHUDManager : MonoBehaviour
 
     void Start()
     {
-        // ВАЖНО: при старте игры проверяем активные квесты
+        locationText.text = "Чертаново Северное: " + PlayerInteraction.Instance.lastLocation;
         CheckActiveQuestsOnStart();
     }
 

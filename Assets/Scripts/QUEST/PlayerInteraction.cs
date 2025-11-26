@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -12,16 +13,22 @@ public class PlayerInteraction : MonoBehaviour
     public bool itemIsTaken = false;
 
     public string lastLocation = "Cafe";
+
     public static PlayerInteraction Instance;
 
 
     void Awake()
     {
-
+        // ИСПРАВЬ для предотвращения дубликатов
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+        else
+        {
+           Destroy(gameObject);
         }
 
         if (hintPanel != null)
@@ -32,6 +39,18 @@ public class PlayerInteraction : MonoBehaviour
         {
             Debug.LogWarning("HintPanel не назначен в инспекторе!");
         }
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Скрываем панель при загрузке любой новой сцены
+        if (hintPanel != null)
+        {
+            hintPanel.SetActive(false);
+        }
+
+        currentBoard = null;
+
     }
 
     void Update()
