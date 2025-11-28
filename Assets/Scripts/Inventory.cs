@@ -6,6 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class Inventory : MonoBehaviour
 {
+    public delegate void ItemHandler (string item_name);
+    public event ItemHandler OnTakenItemEvent;
+
+    public delegate void CoinsHandler(int coint);
+    public event CoinsHandler OnCoinsValueEvent;
+
+
     public List<Item> items = new List<Item>();
     public static Inventory Instance;
     public Image ItemIcon_1;
@@ -83,6 +90,7 @@ public class Inventory : MonoBehaviour
             //Destroy(itemObject);
             itemObject.SetActive(false);
         }
+        this.OnTakenItemEvent?.Invoke(displayName);
     }
 
     public bool HasItem(string itemName)
@@ -90,9 +98,13 @@ public class Inventory : MonoBehaviour
         return items.Exists(item => item.name == itemName);
     }
 
-    public void GetCoins(int coins_amount)
+    public void AddCoins(int coins_amount)
     {
+        Debug.Log("Монет было: " +  this.coins);
         this.coins += coins_amount;
+        Debug.Log("Монет стало: " +  this.coins);
+
+        this.OnCoinsValueEvent?.Invoke(coins_amount);
     }
 
 }

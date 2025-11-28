@@ -9,7 +9,6 @@ public class BulletinBoard : MonoBehaviour
     [Header("Ссылка на текст")]
     public TextMeshPro notificationText;
     public GameObject particle;
-    private bool setParticle = false;
 
     [Header("Настройки индикатора")]
     public string availableIcon = "!";

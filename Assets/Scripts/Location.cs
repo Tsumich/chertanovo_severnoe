@@ -29,19 +29,17 @@ public class Location : MonoBehaviour
             // Для квестов сохраняем инфу о локации
             PlayerInteraction.Instance.lastLocation = this.enterLocation;
 
-            if (QuestManager.Instance.activeQuests.Count > 0)
+            if (QuestManager.Instance.activeQuest)
             {
-                QuestSO activeQuest = QuestManager.Instance.activeQuests.Find(quest =>
-                    quest.currentState == QuestState.InProgress);
-                QuestObjective firstUncompleted = activeQuest.objectives
+                QuestSO active_quest = QuestManager.Instance.activeQuest;
+                QuestObjective firstUncompleted = active_quest.objectives
                         .FirstOrDefault(objective => !objective.isCompleted);
                 Debug.Log(firstUncompleted.triggerLocation);
-                if (firstUncompleted != null && firstUncompleted.triggerLocation == this.id && firstUncompleted.relatedNPCs == 0)
-
+                if (firstUncompleted != null && firstUncompleted.triggerLocation == this.id)
                 {
                     Debug.Log("О тут квест на локу");
-                    firstUncompleted.isCompleted = true;
-                    QuestHUDManager.Instance.CheckActiveQuests();
+                    QuestManager.Instance.Complete_objective(active_quest, firstUncompleted);
+
                 }
 
             }

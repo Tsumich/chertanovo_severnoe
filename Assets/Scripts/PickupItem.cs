@@ -8,7 +8,6 @@ public class PickupItem : MonoBehaviour
     public Sprite itemIcon;
     //public Camera camera;
     private bool playerInRange = false;
-    private bool dialogWasShown = false; // Новый флаг
 
     void Update()
     {
@@ -20,7 +19,6 @@ public class PickupItem : MonoBehaviour
         {
             Inventory.Instance.AddItem(itemName, displayName, itemIcon);
             PlayerInteraction.Instance.hintPanel.SetActive(false);
-            Messages.Instance.messageText.text = "Вы взяли предмет: " + displayName;
             Debug.Log("Взяли предмет : " + displayName);
             Messages.Instance.CloseDialogWindow();
         }

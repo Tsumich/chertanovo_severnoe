@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
-using System.Linq; // ДОБАВЬТЕ в начало файла
+using System.Linq;
 
 public class QuestHUDManager : MonoBehaviour
 {
@@ -20,56 +20,18 @@ public class QuestHUDManager : MonoBehaviour
     void Start()
     {
         locationText.text = "Чертаново Северное: " + PlayerInteraction.Instance.lastLocation;
-        CheckActiveQuestsOnStart();
     }
 
-    // Проверяем активные квесты при запуске игры
-    private void CheckActiveQuestsOnStart()
+    public void ShowQuest(QuestSO quest)
     {
-        // Ждём немного чтобы PlayerQuestManager успел инициализироваться
-        Invoke(nameof(CheckActiveQuests), 0.1f);
-    }
-
-    public void CheckActiveQuests()
-    {
-        if (QuestManager.Instance == null)
+        QuestObjective next_objective = quest.objectives
+                .FirstOrDefault(objective => !objective.isCompleted);
+        if (next_objective == null)
         {
-            Debug.LogError("QuestManager не найден!");
+            Debug.Log("Квест завершен - все задачи выполнены");
+            QuestHUDManager.Instance.ClearHUD();
             return;
         }
-
-        Debug.Log($"Проверяем активные квесты. Всего: {QuestManager.Instance.activeQuests.Count}");
-
-        // Ищем первый квест в статусе InProgress
-        QuestSO activeQuest = QuestManager.Instance.activeQuests.Find(quest =>
-            quest.currentState == QuestState.InProgress);
-
-        if (activeQuest != null)
-        {
-            Debug.Log($"Найден активный квест: {activeQuest.questName}");
-
-            ShowQuest(activeQuest);
-        }
-        else
-        {
-            Debug.Log("Активных квестов не найдено");
-            // Очищаем HUD если нет активных квестов
-            ClearHUD();
-        }
-    }
-
-    public void ShowQuest(QuestSO quest )
-    {
-        QuestObjective firstUncompleted = quest.objectives
-            .FirstOrDefault(objective => !objective.isCompleted);
-
-        if (firstUncompleted == null) { 
-            // есть активный квест но нет задач - значит квест выполнен
-            quest.currentState = QuestState.Completed;
-            Inventory.Instance.coins += quest.reward; // перенести эту логику в менеджер
-            Debug.Log(Inventory.Instance.coins);
-        }
-
         if (questTitleText != null)
         {
             questTitleText.text = quest.questName;
@@ -78,14 +40,13 @@ public class QuestHUDManager : MonoBehaviour
 
         if (questObjectiveText != null)
         {
-            questObjectiveText.text = firstUncompleted.description;
+            questObjectiveText.text = next_objective.description;
         }
 
         Debug.Log($"HUD: Показан квест '{quest.questName}'");
     }
- 
-    // Очищаем HUD
-    private void ClearHUD()
+
+    public void ClearHUD()
     {
         if (questTitleText != null)
         {
@@ -105,4 +66,4 @@ public class QuestHUDManager : MonoBehaviour
         if (locationText != null)
             locationText.text = locationName;
     }
-}
+} 

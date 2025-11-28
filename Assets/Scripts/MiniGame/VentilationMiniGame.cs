@@ -21,8 +21,6 @@ public class VentilationMiniGame : MonoBehaviour
     private float currentTime = 0f;
     private bool gameActive = false;
 
-    private bool gameIsCompleted = false;
-
     private GameObject player;
 
     void Awake()
@@ -90,17 +88,15 @@ public class VentilationMiniGame : MonoBehaviour
         player.SetActive(true);
 
         if (success) {
-            if (QuestManager.Instance.activeQuests.Count > 0)
-            {
-                QuestSO activeQuest = QuestManager.Instance.activeQuests.Find(quest =>
-                    quest.currentState == QuestState.InProgress);
-                QuestObjective firstUncompleted = activeQuest.objectives
+            if (QuestManager.Instance.activeQuest)
+            { 
+                QuestObjective firstUncompleted = QuestManager.Instance.activeQuest.objectives
                         .FirstOrDefault(objective => !objective.isCompleted);
 
                 if (firstUncompleted.objectiveType == ObjectiveType.UseMiniGame)
                 {
                     firstUncompleted.isCompleted = true;
-                    QuestHUDManager.Instance.CheckActiveQuests();
+                    //QuestHUDManager.Instance.CheckActiveQuests();
                 }
 
             }

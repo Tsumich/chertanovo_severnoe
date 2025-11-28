@@ -88,16 +88,13 @@ public class NPC : MonoBehaviour
         
         if (dialogue != null && !DialogueManager.Instance.isInDialogue )
         {
-            Debug.Log("91");
-            if (QuestManager.Instance.activeQuests.Count > 0)
+            if (QuestManager.Instance.activeQuest)
             {
-                Debug.Log("94");
-                QuestSO activeQuest = QuestManager.Instance.activeQuests.Find(quest =>
-                    quest.currentState == QuestState.InProgress);
-                if (this.id == 1) DialogueManager.Instance.StartDialogue(activeQuest.KalinaLine);
+                if (this.id == 1) DialogueManager.Instance.StartDialogue(QuestManager.Instance.activeQuest.KalinaLine);
                 else 
                 {
-                    QuestObjective firstUncompleted = activeQuest.objectives
+                    QuestSO active_quest = QuestManager.Instance.activeQuest;
+                    QuestObjective firstUncompleted = active_quest.objectives
                         .FirstOrDefault(objective => 
                             !objective.isCompleted && objective.relatedNPCs == this.id);
                     if (firstUncompleted != null)
@@ -105,8 +102,7 @@ public class NPC : MonoBehaviour
                         DialogueManager.Instance.StartDialogue(firstUncompleted.startDialogue);
                         if (firstUncompleted.objectiveType == ObjectiveType.TalkToNPC)
                         {
-                            firstUncompleted.isCompleted = true;
-                            QuestHUDManager.Instance.CheckActiveQuests();
+                            QuestManager.Instance.Complete_objective(active_quest, firstUncompleted);
                         }    
                     }
                     else

@@ -25,6 +25,8 @@ public class Messages : MonoBehaviour
         }
         Instance = this;
        // DontDestroyOnLoad(gameObject);
+       Inventory.Instance.OnCoinsValueEvent += OnCoinsValue;
+        Inventory.Instance.OnTakenItemEvent += OnNewItem;
     }
 
     void Start()
@@ -89,5 +91,15 @@ public class Messages : MonoBehaviour
             Debug.Log(isButtonPressed);
         }
         return isButtonPressed;
+    }
+
+    private void OnCoinsValue(int value)
+    {
+        messageText.text = "Получено монет: " + value;
+    }
+
+    private void OnNewItem(string item_name)
+    {
+        messageText.text = "Вы взяли предмет: " + item_name;
     }
 }
