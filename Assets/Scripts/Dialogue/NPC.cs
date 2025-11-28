@@ -103,7 +103,11 @@ public class NPC : MonoBehaviour
                     if (firstUncompleted != null)
                     {
                         DialogueManager.Instance.StartDialogue(firstUncompleted.startDialogue);
-                        if (firstUncompleted.objectiveType == ObjectiveType.TalkToNPC) firstUncompleted.isCompleted = true;
+                        if (firstUncompleted.objectiveType == ObjectiveType.TalkToNPC)
+                        {
+                            firstUncompleted.isCompleted = true;
+                            QuestHUDManager.Instance.CheckActiveQuests();
+                        }    
                     }
                     else
                     {

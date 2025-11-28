@@ -23,7 +23,7 @@ public class DialogueManager : MonoBehaviour
     void Awake()
     {
       
-            dialoguePanel.SetActive(false);
+        dialoguePanel.SetActive(false);
         
         Instance = this;
     }

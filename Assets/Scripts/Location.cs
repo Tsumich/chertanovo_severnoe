@@ -31,7 +31,19 @@ public class Location : MonoBehaviour
 
             if (QuestManager.Instance.activeQuests.Count > 0)
             {
-                // ... тво€ логика квестов
+                QuestSO activeQuest = QuestManager.Instance.activeQuests.Find(quest =>
+                    quest.currentState == QuestState.InProgress);
+                QuestObjective firstUncompleted = activeQuest.objectives
+                        .FirstOrDefault(objective => !objective.isCompleted);
+                Debug.Log(firstUncompleted.triggerLocation);
+                if (firstUncompleted != null && firstUncompleted.triggerLocation == this.id && firstUncompleted.relatedNPCs == 0)
+
+                {
+                    Debug.Log("ќ тут квест на локу");
+                    firstUncompleted.isCompleted = true;
+                    QuestHUDManager.Instance.CheckActiveQuests();
+                }
+
             }
         }
     }

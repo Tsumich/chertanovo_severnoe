@@ -22,9 +22,16 @@ public class InteractableObject : MonoBehaviour
                 if(Inventory.Instance.HasItem("mop"))
                 {
                     Debug.Log("Швабра есть ");
+                    Messages.Instance.showDialogWindow("Почистить вентиляцию?");
+                    if(Messages.Instance.isButtonPressed)
+                    {
+                        SceneManager.LoadScene("VentilationMiniGame");
+                        Messages.Instance.CloseDialogWindow();
+                    }
                 }
                 else
                 {
+                    Messages.Instance.messageText.text = "Нечем воспользоваться для чистки";
                     Debug.Log("Швабры нет");
                 }
             }

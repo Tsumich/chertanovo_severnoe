@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class VentilationMiniGame : MonoBehaviour
 {
@@ -20,11 +21,15 @@ public class VentilationMiniGame : MonoBehaviour
     private float currentTime = 0f;
     private bool gameActive = false;
 
+    private bool gameIsCompleted = false;
+
+    private GameObject player;
+
     void Awake()
     {
         Instance = this;
 
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
         {
             player.SetActive(false);
@@ -82,6 +87,24 @@ public class VentilationMiniGame : MonoBehaviour
         resultPanel.SetActive(true);
         resultText.text = success ? "Вентиляция прочищена!" : "Время вышло!";
         Invoke("ReturnToMainScene", 3f);
+        player.SetActive(true);
+
+        if (success) {
+            if (QuestManager.Instance.activeQuests.Count > 0)
+            {
+                QuestSO activeQuest = QuestManager.Instance.activeQuests.Find(quest =>
+                    quest.currentState == QuestState.InProgress);
+                QuestObjective firstUncompleted = activeQuest.objectives
+                        .FirstOrDefault(objective => !objective.isCompleted);
+
+                if (firstUncompleted.objectiveType == ObjectiveType.UseMiniGame)
+                {
+                    firstUncompleted.isCompleted = true;
+                    QuestHUDManager.Instance.CheckActiveQuests();
+                }
+
+            }
+        }
     }
 
     void ReturnToMainScene()

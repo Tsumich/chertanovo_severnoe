@@ -25,8 +25,6 @@ public class Inventory : MonoBehaviour
         public Sprite icon; // для UI
     }
 
- 
-
     void Awake()
     {
         if (Instance == null)
@@ -34,13 +32,6 @@ public class Inventory : MonoBehaviour
             Instance = this;
         }
 
-        SetInventoryVisible(false);
-    }
-
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        // Всегда закрываем инвентарь при загрузке любой сцены
-        inventoryIsVisible = false;
         SetInventoryVisible(false);
     }
 
@@ -92,9 +83,6 @@ public class Inventory : MonoBehaviour
             //Destroy(itemObject);
             itemObject.SetActive(false);
         }
-
-        // Показываем UI уведомление
-        ShowNotification($"Получено: {displayName}");
     }
 
     public bool HasItem(string itemName)
@@ -102,10 +90,9 @@ public class Inventory : MonoBehaviour
         return items.Exists(item => item.name == itemName);
     }
 
-    void ShowNotification(string text)
+    public void GetCoins(int coins_amount)
     {
-        // Твоя логика показа уведомления
-        Debug.Log(text);
+        this.coins += coins_amount;
     }
 
 }

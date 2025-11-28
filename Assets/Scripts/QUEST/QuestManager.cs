@@ -13,7 +13,6 @@ public class QuestManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            // ВАЖНО: восстанавливаем активные квесты из ScriptableObjects
             RestoreActiveQuests();
         }
         else
@@ -53,5 +52,12 @@ public class QuestManager : MonoBehaviour
         QuestHUDManager.Instance.ShowQuest(quest);
         Debug.Log("accept quest");
         Debug.Log($"Принят квест: {quest.questName}. Всего активных: {activeQuests.Count}");
+    }
+
+    public void Complete_quest(QuestSO quest)
+    {
+        quest.currentState = QuestState.Completed;
+        Inventory.Instance.GetCoins(quest.reward);
+        // Квест -менеджер вызывает событие и на него реагируют подписавшиеся. то есть HUD менеджер
     }
 }

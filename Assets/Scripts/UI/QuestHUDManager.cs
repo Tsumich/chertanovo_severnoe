@@ -62,6 +62,14 @@ public class QuestHUDManager : MonoBehaviour
     {
         QuestObjective firstUncompleted = quest.objectives
             .FirstOrDefault(objective => !objective.isCompleted);
+
+        if (firstUncompleted == null) { 
+            // есть активный квест но нет задач - значит квест выполнен
+            quest.currentState = QuestState.Completed;
+            Inventory.Instance.coins += quest.reward; // перенести эту логику в менеджер
+            Debug.Log(Inventory.Instance.coins);
+        }
+
         if (questTitleText != null)
         {
             questTitleText.text = quest.questName;

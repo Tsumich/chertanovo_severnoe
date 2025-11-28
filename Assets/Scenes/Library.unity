@@ -148,6 +148,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 744820272}
   - {fileID: 871665453}
   - {fileID: 1821051328}
   m_Father: {fileID: 0}
@@ -2167,6 +2168,54 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 19daa7b281605c64484e2b3419924122, type: 3}
   m_PrefabInstance: {fileID: 1100691353}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &744820271
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 744820272}
+  - component: {fileID: 744820273}
+  m_Layer: 0
+  m_Name: MessegesManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &744820272
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 744820271}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 19726691}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &744820273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 744820271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 645edfc0601c2ba4ea03b579dd56c186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Messages
+  panel: {fileID: 1082254653}
+  messageText: {fileID: 457058284}
+  dialogueMessageText: {fileID: 2144562113}
+  isButtonPressed: 0
 --- !u!1 &857762073
 GameObject:
   m_ObjectHideFlags: 0
@@ -2379,7 +2428,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 744820273}
         m_TargetAssemblyTypeName: Messages, Assembly-CSharp
         m_MethodName: clickNo
         m_Mode: 1
@@ -3141,7 +3190,6 @@ GameObject:
   - component: {fileID: 1082254654}
   - component: {fileID: 1082254657}
   - component: {fileID: 1082254656}
-  - component: {fileID: 1082254655}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -3171,22 +3219,6 @@ RectTransform:
   m_AnchoredPosition: {x: 88.787415, y: -6.7189}
   m_SizeDelta: {x: -288.5272, y: -13.4385}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1082254655
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1082254653}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 645edfc0601c2ba4ea03b579dd56c186, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Messages
-  panel: {fileID: 1082254653}
-  messageText: {fileID: 0}
-  dialogueMessageText: {fileID: 2144562113}
-  isButtonPressed: 0
 --- !u!114 &1082254656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5980,7 +6012,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 744820273}
         m_TargetAssemblyTypeName: Messages, Assembly-CSharp
         m_MethodName: clickYes
         m_Mode: 1
