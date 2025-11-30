@@ -62,7 +62,6 @@ public class PlayerInteraction : MonoBehaviour
         }
         if (DialogueManager.Instance != null && DialogueManager.Instance.isInDialogue)
         {
-            //Debug.Log("скрыли плашку");
             hintPanel.SetActive(false);
             return;
         }
@@ -76,6 +75,8 @@ public class PlayerInteraction : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Player"))
+            return;
         if (!other.isTrigger) return;
         Debug.Log($"Триггер: {other.name} (родитель: {other.transform.parent?.name})");
 
@@ -83,45 +84,28 @@ public class PlayerInteraction : MonoBehaviour
 
         else if (other.CompareTag("BulletinBoard"))
         {
-            currentBoard = other.GetComponent<BulletinBoard>();
-            if (hintPanel != null)
-            {
-                hintPanel.SetActive(true);
-            }
+            currentBoard = other.GetComponent<BulletinBoard>();    
             messageText.text = "Нажмите " + interactKey + " чтобы взаимодействовать с доской";
         }
         else if (other.CompareTag("NPC"))
         {
-            if (hintPanel != null)
-            {
-                hintPanel.SetActive(true);
-            }
-            Debug.Log("Нажми E для разговора");
             messageText.text = "Нажмите " + interactKey + " чтобы поговорить";
         }
         else if (other.CompareTag("Item"))
         {
-            if (hintPanel != null)
-            {
-                hintPanel.SetActive(true);
-            }
             messageText.text = "Нажми E чтобы подобрать предмет";
         }
         else if (other.CompareTag("Enter"))
         {
-            if (hintPanel != null)
-            {
-                hintPanel.SetActive(true);
-            }
             messageText.text = "Нажмите Е чтобы зайти";
         }
         else if (other.CompareTag("InteractableObject"))
         {
-            if (hintPanel != null)
-            {
-                hintPanel.SetActive(true);
-            }
             messageText.text = "Нажмите Е чтобы взаимодействовать";
+        }
+        if (hintPanel != null)
+        {
+            hintPanel.SetActive(true);
         }
     }
 

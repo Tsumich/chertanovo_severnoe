@@ -11,7 +11,8 @@ public class Messages : MonoBehaviour
     public TextMeshProUGUI dialogueMessageText;
     public bool isButtonPressed = false;
 
-    // ДОБАВЬ ссылку на PlayerMovement
+    private System.Action onYesCallback;
+
     private PlayerMovement playerMovement;
 
     void Awake()
@@ -25,8 +26,6 @@ public class Messages : MonoBehaviour
         }
         Instance = this;
        // DontDestroyOnLoad(gameObject);
-       Inventory.Instance.OnCoinsValueEvent += OnCoinsValue;
-        Inventory.Instance.OnTakenItemEvent += OnNewItem;
     }
 
     void Start()
@@ -35,14 +34,16 @@ public class Messages : MonoBehaviour
         playerMovement = FindObjectOfType<PlayerMovement>();
     }
 
-    public void showDialogWindow(string text)
+    public void showDialogWindow(string text, System.Action onYesCallback = null)
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         panel.SetActive(true);
         dialogueMessageText.text = text;
 
-        LockPlayerMovement(); // БЛОКИРУЕМ движение
+        this.onYesCallback = onYesCallback;
+
+        LockPlayerMovement();
     }
 
     private void LockPlayerMovement()
@@ -59,14 +60,14 @@ public class Messages : MonoBehaviour
         isButtonPressed = false;
         panel.SetActive(false);
 
-        UnlockPlayerMovement(); // РАЗБЛОКИРУЕМ движение
+        UnlockPlayerMovement(); 
     }
 
     private void UnlockPlayerMovement()
     {
         if (playerMovement != null)
         {
-            playerMovement.enabled = true; // ВКЛЮЧАЕМ скрипт движения
+            playerMovement.enabled = true; 
         }
     }
 
@@ -74,7 +75,8 @@ public class Messages : MonoBehaviour
     {
         panel.SetActive(false);
         isButtonPressed = true;
-        UnlockPlayerMovement(); // РАЗБЛОКИРУЕМ при нажатии Yes
+        UnlockPlayerMovement();
+        onYesCallback?.Invoke();
     }
 
     public void clickNo()
@@ -91,15 +93,5 @@ public class Messages : MonoBehaviour
             Debug.Log(isButtonPressed);
         }
         return isButtonPressed;
-    }
-
-    private void OnCoinsValue(int value)
-    {
-        messageText.text = "Получено монет: " + value;
-    }
-
-    private void OnNewItem(string item_name)
-    {
-        messageText.text = "Вы взяли предмет: " + item_name;
     }
 }

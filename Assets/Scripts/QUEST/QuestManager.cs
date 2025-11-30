@@ -7,6 +7,12 @@ public class QuestManager : MonoBehaviour
     public static QuestManager Instance;
     public QuestSO activeQuest;
 
+    public delegate void QuestHandler(QuestSO quest);
+    public event QuestHandler OnCompletedQuestEvent;
+
+    public delegate void ObjectiveHandler(QuestObjective objective);
+    public event ObjectiveHandler OnCompletedObjectiveEvent;
+
     public List<QuestSO> completed_quests = new List<QuestSO>();
 
     void Start()
@@ -47,11 +53,11 @@ public class QuestManager : MonoBehaviour
 
         if (activeQuest != null)
         {
-            QuestHUDManager.Instance.ShowQuest(activeQuest);
+            HUDManager.Instance.ShowQuest(activeQuest);
         }
         else
         {
-            QuestHUDManager.Instance.ClearHUD();
+            HUDManager.Instance.ClearHUD();
         }
         Debug.Log("В UI переданы информация о квесте и задаче");
     }
@@ -65,7 +71,7 @@ public class QuestManager : MonoBehaviour
         QuestObjective next_objective = quest.objectives
                     .FirstOrDefault(objective => !objective.isCompleted);
 
-        QuestHUDManager.Instance.ShowQuest(quest);
+        HUDManager.Instance.ShowQuest(quest);
         Debug.Log("accept quest");
         Debug.Log($"Принят квест: {quest.questName}");
 
@@ -76,7 +82,7 @@ public class QuestManager : MonoBehaviour
     {
         quest.currentState = QuestState.Completed;
         Inventory.Instance.AddCoins(quest.reward);
-  
+        this.OnCompletedQuestEvent?.Invoke(quest);
     }
 
     public void Complete_objective(QuestSO current_quest, QuestObjective objective)
@@ -86,13 +92,14 @@ public class QuestManager : MonoBehaviour
                         .FirstOrDefault(objective => !objective.isCompleted);
         if (next_objective == null)
         {
+            Complete_quest(current_quest);
             Debug.Log("Квест завершен - все задачи выполнены");
-            QuestHUDManager.Instance.ClearHUD();
+            HUDManager.Instance.ClearHUD();
         }
         else
         {
-            QuestHUDManager.Instance.ShowQuest(current_quest);
-            Inventory.Instance.AddCoins(current_quest.reward);
+            HUDManager.Instance.ShowQuest(current_quest);
+            this.OnCompletedObjectiveEvent?.Invoke(next_objective);
             Debug.Log("В UI переданы информация о квесте и задаче");
         }
 

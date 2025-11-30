@@ -19,10 +19,12 @@ public class Inventory : MonoBehaviour
     public Image ItemIcon_2;
     public Image ItemIcon_3;
 
+    public TextMeshProUGUI coinsPanel;
+
     public GameObject inventoryUI;
     public bool inventoryIsVisible = false;
 
-    public int coins = 0;
+    private int coins = 0;
 
     [System.Serializable]
     public class Item
@@ -70,6 +72,7 @@ public class Inventory : MonoBehaviour
                 ItemIcon_1.sprite = item.icon;
                 ItemIcon_1.GetComponentInChildren<TextMeshProUGUI>().text = item.displayName;
             }
+            coinsPanel.text = $"{coins}";
         }
     }
 
@@ -105,6 +108,11 @@ public class Inventory : MonoBehaviour
         Debug.Log("Монет стало: " +  this.coins);
 
         this.OnCoinsValueEvent?.Invoke(coins_amount);
+    }
+
+    public bool HasEnoughtCoins(int coins_amount)
+    {
+        return coins_amount < coins;
     }
 
 }

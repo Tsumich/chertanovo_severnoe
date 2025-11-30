@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public static PlayerMovement Instance;
+
     public float moveSpeed = 9f;
     public float mouseSensitivity = 200f;
     
@@ -12,10 +15,21 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        // Курсор скрывается и блокируется в центре экрана
+        Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
     }
-    
+
     void Update()
     {
         // === ДВИЖЕНИЕ МЫШЬЮ (ВЗГЛЯД) ===

@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/main_menu.unity
     guid: ed2146091fe45db43b3b2d2e52f41d48
   - enabled: 1
+    path: Assets/Scenes/Intro.unity
+    guid: 1d0eac0d45e29a24eb25224705c1b49e
+  - enabled: 1
     path: Assets/chert_city.unity
     guid: 32844dd0081fbb44db371b991f58d974
   - enabled: 1

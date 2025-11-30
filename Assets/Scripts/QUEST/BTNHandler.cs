@@ -12,7 +12,7 @@ public class BTNHandler : MonoBehaviour
     // Update is called once per frame
     public void RunGame()
     {
-        SceneManager.LoadScene("chert_city");
+        SceneManager.LoadScene("Intro");
     }
 
     public void CloseGame()

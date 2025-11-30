@@ -55,7 +55,7 @@ public class BulletinBoard : MonoBehaviour
             UpdateNotification();
 
             // ПОКАЗЫВАЕМ КВЕСТ В HUD!
-            QuestHUDManager.Instance.ShowQuest(questData);
+            HUDManager.Instance.ShowQuest(questData);
 
             Debug.Log($"Принят квест: {questData.questName}");
         }

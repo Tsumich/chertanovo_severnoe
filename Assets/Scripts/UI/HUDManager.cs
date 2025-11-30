@@ -3,14 +3,21 @@ using TMPro;
 using System.Collections.Generic;
 using System.Linq;
 
-public class QuestHUDManager : MonoBehaviour
+public class HUDManager : MonoBehaviour
 {
-    public static QuestHUDManager Instance;
+    public static HUDManager Instance;
 
-    [Header("HUD Elements")]
+    [Header("Dialogue Elements")]
     public TextMeshProUGUI locationText;
     public TextMeshProUGUI questTitleText;
     public TextMeshProUGUI questObjectiveText;
+
+    [Header("Last actions or events (yellow panel)")]
+    public TextMeshProUGUI yellowPanelText;
+
+    [Header("Show current FPS")]
+    public TextMeshProUGUI fpsText;
+    private float deltaTime = 0.0f;
 
     void Awake()
     {
@@ -20,6 +27,29 @@ public class QuestHUDManager : MonoBehaviour
     void Start()
     {
         locationText.text = "Чертаново Северное: " + PlayerInteraction.Instance.lastLocation;
+        // подписываемся на события инвентаря
+        Inventory.Instance.OnCoinsValueEvent += OnCoinsValue;
+        Inventory.Instance.OnTakenItemEvent += OnNewItem;
+    }
+
+    void Update()
+    {
+        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+        float fps = 1.0f / deltaTime;
+        if (fpsText != null)
+        {
+            fpsText.text = string.Format("FPS: {0:0.}", fps);
+        }
+    }
+
+    private void OnCoinsValue(int value)
+    {
+        yellowPanelText.text = "Получено монет: " + value;
+    }
+
+    private void OnNewItem(string item_name)
+    {
+        yellowPanelText.text = "Вы взяли предмет: " + item_name;
     }
 
     public void ShowQuest(QuestSO quest)
@@ -29,7 +59,7 @@ public class QuestHUDManager : MonoBehaviour
         if (next_objective == null)
         {
             Debug.Log("Квест завершен - все задачи выполнены");
-            QuestHUDManager.Instance.ClearHUD();
+            HUDManager.Instance.ClearHUD();
             return;
         }
         if (questTitleText != null)
