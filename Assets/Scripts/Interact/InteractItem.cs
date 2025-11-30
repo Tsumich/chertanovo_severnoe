@@ -7,7 +7,7 @@ public class InteractItem : MonoBehaviour, IInteractable
     public string displayName = "Швабра";
 
     public itemType itemType;
-    public string inspectItemDescription;
+    public ThroughtsSO throughts;
 
     public Sprite itemIcon;
 
@@ -22,18 +22,16 @@ public class InteractItem : MonoBehaviour, IInteractable
                 Debug.Log("Взяли предмет : " + displayName);
             });
         }
-        else if (itemType == itemType.InteractItem)
+        else if (itemType == itemType.InspectItem)
         {
-            Messages.Instance.showDialogWindow("Купит коф? ", () =>
+            DialogueManager.Instance.StartDialogue(throughts);
+        }
+        else if (itemType == itemType.PickUpItem)
+        {
+            Messages.Instance.showDialogWindow("Взять с собой " + displayName, () =>
             {
-                if(Inventory.Instance.HasEnoughtCoins(140))
-                {
-                    Inventory.Instance.AddItem(itemName, displayName, itemIcon);
-                }
-                else
-                {
-                    Messages.Instance.messageText.text = "Нет денег!";
-                }
+                Inventory.Instance.AddItem(itemName, displayName, itemIcon);
+                Debug.Log("Взяли предмет : " + displayName);
             });
         }
         else return;

@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Linq;
 
-public class NPC : MonoBehaviour
+public class NPC : MonoBehaviour, IInteractable
 {
     [Header("Диалог NPC")]
     public DialogueSO dialogue;
@@ -27,12 +27,11 @@ public class NPC : MonoBehaviour
         UpdateExclamationMark();
     }
 
-    void Update()
+
+    public void Interact()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
-        {
-            // Добавляем проверку, что диалог действительно завершен
-            if (!DialogueManager.Instance.isInDialogue && DialogueManager.Instance.isDialogueEnding == false)
+        // Добавляем проверку, что диалог действительно завершен
+        if (!DialogueManager.Instance.isInDialogue && DialogueManager.Instance.isDialogueEnding == false)
             {
                 TryStartDialogue();
                 Debug.Log($"клавиша нажата: E");
@@ -42,7 +41,7 @@ public class NPC : MonoBehaviour
                 DialogueManager.Instance.isDialogueEnding = false;
             }
             UpdateExclamationMark();
-        }
+        
     }
 
     void CreateExclamationMark()
@@ -120,25 +119,8 @@ public class NPC : MonoBehaviour
         
     }
 
-    void OnTriggerEnter(Collider other)
+    public string GetHintToInteract()
     {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = true;
-            //Debug.Log($"Подойди к {npcName} - нажми E");
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
-            if (DialogueManager.Instance.isInDialogue)
-            {
-                DialogueManager.Instance.isDialogueEnding = true;
-            }
-            //Debug.Log($"Отошли от {npcName}");
-        }
+        return "Нажмите E, чтобы поговорить с <color=yellow>" + npcName + " </color>";
     }
 }

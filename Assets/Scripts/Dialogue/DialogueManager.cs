@@ -13,7 +13,8 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI dialogueText;
     public Image speakerAvatar;
 
-    private DialogueSO currentDialogue;
+    private IDialogueSO currentDialogue;
+
     private int currentLineIndex;
     public bool isInDialogue = false;
     private bool canProceedToNextLine = false;
@@ -41,7 +42,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void StartDialogue(DialogueSO dialogue)
+    public void StartDialogue(IDialogueSO dialogue)
     {
         Debug.Log($"StartDialogue вызван");
         if (isInDialogue) return;
@@ -60,7 +61,8 @@ public class DialogueManager : MonoBehaviour
     void ShowCurrentLine()
     {
         Debug.Log($"ShowCurrentLine вызван для реплики {currentLineIndex}");
-        var line = currentDialogue.dialogueLines[currentLineIndex];
+
+        DialogueLine line = currentDialogue.GetDialogueLine(currentLineIndex);
 
         // ИСПРАВЛЕННАЯ ЧАСТЬ - используем NPCDataSO вместо строки
         if (line.speaker != null)
@@ -98,7 +100,7 @@ public class DialogueManager : MonoBehaviour
         currentLineIndex++;
 
         // ИСПРАВЛЕНИЕ: проверяем, достигли ли мы конца массива
-        if (currentLineIndex < currentDialogue.dialogueLines.Length)
+        if (currentLineIndex < currentDialogue.GetLenght())
         {
             ShowCurrentLine();
         }
@@ -114,9 +116,9 @@ public class DialogueManager : MonoBehaviour
         canProceedToNextLine = false;
         dialoguePanel.SetActive(false);
         // Скрываем аватар при завершении диалога
-        if (speakerAvatar != null)
-            speakerAvatar.gameObject.SetActive(false);
-        isDialogueEnding = true;
+        //if (speakerAvatar != null)
+        //   speakerAvatar.gameObject.SetActive(false);
+        //isDialogueEnding = true;
         Debug.Log("Диалог завершён");
 
     }
