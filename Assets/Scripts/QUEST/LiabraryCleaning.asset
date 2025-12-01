@@ -20,7 +20,7 @@ MonoBehaviour:
     \u0432\u043B\u0430\u0433\u0430, \u044D\u0442\u043E \u0432\u0440\u0435\u0434\u0438\u0442
     \u0431\u0443\u043C\u0430\u0436\u043D\u043E\u043C\u0443 \u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B\u0443!"
   KalinaLine: {fileID: 11400000, guid: e2b82f63faf608d4d8abfc4a78d37934, type: 2}
-  currentState: 1
+  currentState: 0
   objectives:
   - objectiveType: 1
     relatedNPCs: 0
@@ -50,6 +50,6 @@ MonoBehaviour:
     objectiveID: talk_with_archive_npc
     description: "\u0421\u043D\u043E\u0432\u0430 \u043F\u043E\u0433\u043E\u0432\u043E\u0440\u0438\u0442\u044C
       \u0441 \u0437\u0430\u0433\u0430\u0434\u043E\u0447\u043D\u044B\u043C \u043A\u043E\u0442\u043E\u043C"
-    isCompleted: 0
+    isCompleted: 1
     startDialogue: {fileID: 11400000, guid: 2dc484609afda234581d92b3d05f7a61, type: 2}
   reward: 140

@@ -9,7 +9,6 @@ public class Messages : MonoBehaviour
     public GameObject panel;
     public TextMeshProUGUI messageText;
     public TextMeshProUGUI dialogueMessageText;
-    public bool isButtonPressed = false;
 
     private System.Action onYesCallback;
 
@@ -42,56 +41,28 @@ public class Messages : MonoBehaviour
         dialogueMessageText.text = text;
 
         this.onYesCallback = onYesCallback;
-
-        LockPlayerMovement();
+        DialogueManager.Instance.isInDialogue = true;
+        PlayerMovement.Instance.LockPlayerMovement();
     }
 
-    private void LockPlayerMovement()
-    {
-        if (playerMovement != null)
-        {
-            playerMovement.enabled = false; // ВЫКЛЮЧАЕМ скрипт движения
-        }
-    }
+
 
     public void CloseDialogWindow()
     {
         Cursor.visible = false;
-        isButtonPressed = false;
         panel.SetActive(false);
-
-        UnlockPlayerMovement(); 
-    }
-
-    private void UnlockPlayerMovement()
-    {
-        if (playerMovement != null)
-        {
-            playerMovement.enabled = true; 
-        }
+        DialogueManager.Instance.isInDialogue = false;
+        PlayerMovement.Instance.UnlockPlayerMovement();
     }
 
     public void clickYes()
     {
-        panel.SetActive(false);
-        isButtonPressed = true;
-        UnlockPlayerMovement();
         onYesCallback?.Invoke();
+        CloseDialogWindow();
     }
 
     public void clickNo()
     {
-        panel.SetActive(false);
-        isButtonPressed = false;
-        UnlockPlayerMovement(); // РАЗБЛОКИРУЕМ при нажатии No
-    }
-
-    public bool getBtnsState()
-    {
-        if (isButtonPressed)
-        {
-            Debug.Log(isButtonPressed);
-        }
-        return isButtonPressed;
+        CloseDialogWindow();
     }
 }

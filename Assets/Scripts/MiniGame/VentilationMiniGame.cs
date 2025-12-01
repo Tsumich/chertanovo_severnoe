@@ -106,6 +106,6 @@ public class VentilationMiniGame : MonoBehaviour
 
     void ReturnToMainScene()
     {
-        SceneManager.LoadScene("Library");
+        SceneManager.LoadScene("Scenes/Library");
     }
 }

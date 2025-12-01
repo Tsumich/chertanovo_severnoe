@@ -50,4 +50,14 @@ public class PlayerMovement : MonoBehaviour
 
         controller.Move(move * moveSpeed * Time.deltaTime);
     }
+
+    public void LockPlayerMovement()
+    {  
+        this.enabled = false; // ВЫКЛЮЧАЕМ скрипт движения
+    }
+
+    public void UnlockPlayerMovement()
+    {
+        this.enabled = true; // ВКЛЮЧАЕМ скрипт движения
+    }
 }

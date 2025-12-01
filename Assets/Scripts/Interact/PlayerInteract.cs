@@ -14,17 +14,23 @@ public class PlayerInteract : MonoBehaviour
 
     void Update()
     {
-        InteractionRay();
+         InteractionRay();
     }
 
     void InteractionRay()
     {
         Ray ray = mainCamera.ViewportPointToRay(Vector3.one / 2f);
         RaycastHit hit;
+         
+        if (DialogueManager.Instance.isInDialogue)
+        {
+            interactionPanel.SetActive(false);
+            return;
+        }
 
         bool hitSomething = false;
 
-        if(Physics.Raycast(ray, out hit, interactionDistance))
+        if (Physics.Raycast(ray, out hit, interactionDistance))
         {
             IInteractable interactable = hit.collider.GetComponent<IInteractable>();
             if(interactable != null)
@@ -32,8 +38,7 @@ public class PlayerInteract : MonoBehaviour
                 hitSomething = true;
                 interactionText.text = interactable.GetHintToInteract();
                 if (Input.GetKeyDown(KeyCode.E))
-                {
-                    interactionPanel.SetActive(false);
+                {      
                     interactable.Interact();
                 }
             }

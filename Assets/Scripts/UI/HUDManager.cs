@@ -8,6 +8,7 @@ public class HUDManager : MonoBehaviour
     public static HUDManager Instance;
 
     [Header("Dialogue Elements")]
+    public GameObject questInfo;
     public TextMeshProUGUI locationText;
     public TextMeshProUGUI questTitleText;
     public TextMeshProUGUI questObjectiveText;
@@ -26,7 +27,7 @@ public class HUDManager : MonoBehaviour
 
     void Start()
     {
-        locationText.text = "Чертаново Северное: " + PlayerInteraction.Instance.lastLocation;
+        locationText.text = "Чертаново Северное: Кафе" + PlayerInteraction.Instance.lastLocation;
         // подписываемся на события инвентаря
         Inventory.Instance.OnCoinsValueEvent += OnCoinsValue;
         Inventory.Instance.OnTakenItemEvent += OnNewItem;
@@ -54,6 +55,7 @@ public class HUDManager : MonoBehaviour
 
     public void ShowQuest(QuestSO quest)
     {
+        questInfo.SetActive(true);
         QuestObjective next_objective = quest.objectives
                 .FirstOrDefault(objective => !objective.isCompleted);
         if (next_objective == null)
@@ -74,14 +76,16 @@ public class HUDManager : MonoBehaviour
         }
 
         Debug.Log($"HUD: Показан квест '{quest.questName}'");
+        Debug.Log($"HUD: Показан квест '{next_objective.description}'");
     }
 
     public void ClearHUD()
     {
         if (questTitleText != null)
         {
-            questTitleText.text = "";
-            questTitleText.gameObject.SetActive(false);
+            questInfo.SetActive(false);
+            //questTitleText.text = "";
+            //questTitleText.gameObject.SetActive(false);
         }
 
         if (questObjectiveText != null)

@@ -51,13 +51,14 @@ public class Inventory : MonoBehaviour
             if (!inventoryIsVisible) {
                 inventoryIsVisible = true;
                 SetInventoryVisible(true);
-
+                PlayerMovement.Instance.LockPlayerMovement();
             }
             else
             {
                 
                 inventoryIsVisible = false;
                 SetInventoryVisible(false);
+                PlayerMovement.Instance.UnlockPlayerMovement();
             }
         }
     }

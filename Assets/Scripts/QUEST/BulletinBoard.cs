@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 
-public class BulletinBoard : MonoBehaviour
+public class BulletinBoard : MonoBehaviour, IInteractable
 {
     [Header("Ссылка на квест")]
     public QuestSO questData;
@@ -50,14 +50,18 @@ public class BulletinBoard : MonoBehaviour
         if (questData.currentState == QuestState.NotStarted)
         {
 
-            QuestManager.Instance.AcceptQuest(questData);
-            // Обновляем визуал доски
-            UpdateNotification();
+            Messages.Instance.showDialogWindow("Взять задание:  " + questData.description, () =>
+            {
+                QuestManager.Instance.AcceptQuest(questData);
+                UpdateNotification();
+            });
+            
 
-            // ПОКАЗЫВАЕМ КВЕСТ В HUD!
-            HUDManager.Instance.ShowQuest(questData);
-
-            Debug.Log($"Принят квест: {questData.questName}");
         }
+    }
+
+    public string GetHintToInteract()
+    {
+        return "Нажмите E, чтобы посмотреть объявления";
     }
 }

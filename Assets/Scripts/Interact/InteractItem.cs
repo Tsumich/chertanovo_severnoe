@@ -26,12 +26,18 @@ public class InteractItem : MonoBehaviour, IInteractable
         {
             DialogueManager.Instance.StartDialogue(throughts);
         }
-        else if (itemType == itemType.PickUpItem)
+        else if (itemType == itemType.InteractItem)
         {
-            Messages.Instance.showDialogWindow("Взять с собой " + displayName, () =>
+            Messages.Instance.showDialogWindow("Потратить 140 руб на коф? " + displayName, () =>
             {
-                Inventory.Instance.AddItem(itemName, displayName, itemIcon);
-                Debug.Log("Взяли предмет : " + displayName);
+                if(Inventory.Instance.HasEnoughtCoins(140))
+                {
+                    Messages.Instance.showDialogWindow("Вы купили коф");
+                }
+                else
+                {
+                    Messages.Instance.showDialogWindow("Денег на коф нет");
+                }
             });
         }
         else return;

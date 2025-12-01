@@ -44,6 +44,7 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(IDialogueSO dialogue)
     {
+        PlayerMovement.Instance.LockPlayerMovement();
         Debug.Log($"StartDialogue вызван");
         if (isInDialogue) return;
         if (dialoguePanel != null)
@@ -115,11 +116,8 @@ public class DialogueManager : MonoBehaviour
         isInDialogue = false;
         canProceedToNextLine = false;
         dialoguePanel.SetActive(false);
-        // Скрываем аватар при завершении диалога
-        //if (speakerAvatar != null)
-        //   speakerAvatar.gameObject.SetActive(false);
-        //isDialogueEnding = true;
+        
         Debug.Log("Диалог завершён");
-
+        PlayerMovement.Instance.UnlockPlayerMovement();
     }
 }

@@ -20,13 +20,6 @@ public class NPC : MonoBehaviour, IInteractable
     private bool playerInRange = false;
     private GameObject exclamationMark; // Будет создаваться автоматически
 
-    void Start()
-    {
-        // Автоматически создаем восклицательный знак
-        CreateExclamationMark();
-        UpdateExclamationMark();
-    }
-
 
     public void Interact()
     {
@@ -39,67 +32,32 @@ public class NPC : MonoBehaviour, IInteractable
             else
             {
                 DialogueManager.Instance.isDialogueEnding = false;
-            }
-            UpdateExclamationMark();
-        
+            }        
     }
 
-    void CreateExclamationMark()
-    {
-        // Если уже есть - выходим
-        if (exclamationMark != null) return;
 
-        // Создаем объект для "!"
-        exclamationMark = new GameObject("ExclamationMark");
-        exclamationMark.transform.SetParent(transform);
-        exclamationMark.transform.localPosition = exclamationOffset;
-
-        // Добавляем TextMeshPro
-        TextMeshPro tmp = exclamationMark.AddComponent<TextMeshPro>();
-        tmp.text = "!";
-        tmp.color = exclamationColor;
-        tmp.fontSize = exclamationSize;
-        tmp.alignment = TextAlignmentOptions.Center;
-
-        // Важные настройки для видимости
-        tmp.rectTransform.sizeDelta = new Vector2(2, 2);
-        tmp.enableWordWrapping = false;
-
-        // Добавляем поворот к камере
-        exclamationMark.AddComponent<SimpleBillboard>();
-
-        // По умолчанию скрываем
-        exclamationMark.SetActive(true);
-    }
-
-    // Метод для обновления восклицательного знака
-    public void UpdateExclamationMark()
-    {
-        if (exclamationMark != null)
-        {
-            // Показываем "!" только если hasDialog = true
-            exclamationMark.SetActive(hasDialog);
-        }
-    }
 
     void TryStartDialogue()
     {
         
-        if (dialogue != null && !DialogueManager.Instance.isInDialogue )
+        if (!DialogueManager.Instance.isInDialogue )
         {
             if (QuestManager.Instance.activeQuest)
             {
+                Debug.Log("has active");
                 if (this.id == 1) DialogueManager.Instance.StartDialogue(QuestManager.Instance.activeQuest.KalinaLine);
                 else 
                 {
                     QuestSO active_quest = QuestManager.Instance.activeQuest;
                     QuestObjective firstUncompleted = active_quest.objectives
                         .FirstOrDefault(objective => 
-                            !objective.isCompleted && objective.relatedNPCs == this.id);
+                            !objective.isCompleted);
+                    Debug.Log(firstUncompleted.objectiveType);
+                    if (firstUncompleted.objectiveType != ObjectiveType.TalkToNPC) return;
                     if (firstUncompleted != null)
                     {
                         DialogueManager.Instance.StartDialogue(firstUncompleted.startDialogue);
-                        if (firstUncompleted.objectiveType == ObjectiveType.TalkToNPC)
+                        if (firstUncompleted.relatedNPCs == this.id)
                         {
                             QuestManager.Instance.Complete_objective(active_quest, firstUncompleted);
                         }    
