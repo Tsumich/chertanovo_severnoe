@@ -54,10 +54,13 @@ public class PlayerMovement : MonoBehaviour
     public void LockPlayerMovement()
     {  
         this.enabled = false; // ВЫКЛЮЧАЕМ скрипт движения
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void UnlockPlayerMovement()
     {
+        Cursor.visible = false;
         this.enabled = true; // ВКЛЮЧАЕМ скрипт движения
     }
 }

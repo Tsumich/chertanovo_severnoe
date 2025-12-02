@@ -1,8 +1,9 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using static Inventory;
 
 public class Inventory : MonoBehaviour
 {
@@ -19,12 +20,14 @@ public class Inventory : MonoBehaviour
     public Image ItemIcon_2;
     public Image ItemIcon_3;
 
+    private int currentOffset = 0;
+
     public TextMeshProUGUI coinsPanel;
 
     public GameObject inventoryUI;
     public bool inventoryIsVisible = false;
 
-    private int coins = 0;
+    private int coins = 2000;
 
     [System.Serializable]
     public class Item
@@ -51,14 +54,12 @@ public class Inventory : MonoBehaviour
             if (!inventoryIsVisible) {
                 inventoryIsVisible = true;
                 SetInventoryVisible(true);
-                PlayerMovement.Instance.LockPlayerMovement();
             }
             else
             {
                 
                 inventoryIsVisible = false;
                 SetInventoryVisible(false);
-                PlayerMovement.Instance.UnlockPlayerMovement();
             }
         }
     }
@@ -67,13 +68,43 @@ public class Inventory : MonoBehaviour
     {
         inventoryUI.SetActive(visible);
         if (inventoryIsVisible) {
-            Debug.Log(items.Count);
-            foreach(Item item in items)
+            if (PlayerMovement.Instance != null)
             {
-                ItemIcon_1.sprite = item.icon;
-                ItemIcon_1.GetComponentInChildren<TextMeshProUGUI>().text = item.displayName;
+                PlayerMovement.Instance.LockPlayerMovement();
+            }
+            else
+            {
+                Debug.LogWarning("PlayerMovement.Instance is null!");
+            }
+
+            PlayerMovement.Instance.LockPlayerMovement();
+            Debug.Log(items.Count);
+            if (GetLenght() == 0) return;
+            if(0 + currentOffset < GetLenght())
+            {
+                ItemIcon_1.sprite = items[0 + currentOffset].icon;
+                ItemIcon_1.GetComponentInChildren<TextMeshProUGUI>().text = items[0 + currentOffset].displayName;
+            }
+            if (0 + currentOffset + 1 < GetLenght())
+            {
+                ItemIcon_2.sprite = items[0 + currentOffset + 1].icon;
+                ItemIcon_2.GetComponentInChildren<TextMeshProUGUI>().text = items[0 + currentOffset + 1].displayName;
+            }
+
+            if (0 + currentOffset + 2 < GetLenght())
+            {
+                ItemIcon_3.sprite = items[0 + currentOffset + 2].icon;
+                ItemIcon_3.GetComponentInChildren<TextMeshProUGUI>().text = items[0 + currentOffset + 2].displayName;
             }
             coinsPanel.text = $"{coins}";
+        }
+        else
+        {
+            // При скрытии инвентаря тоже проверяем
+            if (PlayerMovement.Instance != null)
+            {
+                PlayerMovement.Instance.UnlockPlayerMovement();
+            }
         }
     }
 
@@ -114,6 +145,11 @@ public class Inventory : MonoBehaviour
     public bool HasEnoughtCoins(int coins_amount)
     {
         return coins_amount < coins;
+    }
+
+    public int GetLenght()
+    {
+        return this.items.Count;
     }
 
 }

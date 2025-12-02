@@ -27,7 +27,7 @@ MonoBehaviour:
     triggerLocation: 1
     objectiveID: find_a_library
     description: "\u041D\u0430\u0439\u0442\u0438 \u0431\u0438\u0431\u043B\u0438\u043E\u0442\u0435\u043A\u0443"
-    isCompleted: 1
+    isCompleted: 0
     startDialogue: {fileID: 0}
   - objectiveType: 0
     relatedNPCs: 2
@@ -35,14 +35,14 @@ MonoBehaviour:
     objectiveID: talk_with_archive_npc
     description: "\u041F\u043E\u0433\u043E\u0432\u043E\u0440\u0438\u0442\u044C \u0441
       \u0430\u0440\u0445\u0438\u0432\u0430\u0440\u0438\u0443\u0441\u043E\u043C"
-    isCompleted: 1
+    isCompleted: 0
     startDialogue: {fileID: 11400000, guid: 6d08ee7f55a5a8843a3240dd5ad450da, type: 2}
   - objectiveType: 3
     relatedNPCs: 0
     triggerLocation: 0
     objectiveID: talk_with_archive_npc
     description: "\u041D\u0430\u0439\u0442\u0438 \u0432\u0435\u043D\u0442\u0438\u043B\u044F\u0446\u0438\u044E"
-    isCompleted: 1
+    isCompleted: 0
     startDialogue: {fileID: 0}
   - objectiveType: 0
     relatedNPCs: 2
@@ -50,6 +50,6 @@ MonoBehaviour:
     objectiveID: talk_with_archive_npc
     description: "\u0421\u043D\u043E\u0432\u0430 \u043F\u043E\u0433\u043E\u0432\u043E\u0440\u0438\u0442\u044C
       \u0441 \u0437\u0430\u0433\u0430\u0434\u043E\u0447\u043D\u044B\u043C \u043A\u043E\u0442\u043E\u043C"
-    isCompleted: 1
+    isCompleted: 0
     startDialogue: {fileID: 11400000, guid: 2dc484609afda234581d92b3d05f7a61, type: 2}
   reward: 140

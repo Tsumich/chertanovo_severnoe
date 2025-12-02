@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Intro.unity
     guid: 1d0eac0d45e29a24eb25224705c1b49e
   - enabled: 1
-    path: Assets/chert_city.unity
-    guid: 32844dd0081fbb44db371b991f58d974
+    path: Assets/Scenes/chertanovo.unity
+    guid: 8c102149826194c46bc79dbf3bcb09e1
   - enabled: 1
     path: Assets/Scenes/Library.unity
     guid: fcad6f9534e4c124abab89d91ad74096

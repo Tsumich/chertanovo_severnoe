@@ -13,11 +13,10 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI dialogueText;
     public Image speakerAvatar;
 
-    private IDialogueSO currentDialogue;
+    public IDialogueSO currentDialogue;
 
-    private int currentLineIndex;
+    public int currentLineIndex;
     public bool isInDialogue = false;
-    private bool canProceedToNextLine = false;
 
     public bool isDialogueEnding = false;
 
@@ -29,48 +28,56 @@ public class DialogueManager : MonoBehaviour
         Instance = this;
     }
 
-    void Update()
-    {
-        if (isInDialogue && canProceedToNextLine &&
-           (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.E)))
-        {
-            ShowNextLine();
-        }
-        if (isDialogueEnding && isInDialogue)
-        {
-            EndDialogue();
-        }
-    }
-
     public void StartDialogue(IDialogueSO dialogue)
     {
         PlayerMovement.Instance.LockPlayerMovement();
         Debug.Log($"StartDialogue вызван");
-        if (isInDialogue) return;
+
+        if (dialogue == null)
+        {
+            Debug.Log($"Переданный dialogue пустой!");
+            EndDialogue();
+            return;
+        }
+
+        if (isInDialogue)
+        {
+            ShowNextLine();
+            Debug.Log("Мы уже в диалоге и показываем след реплику");
+            return;
+        }
+        Debug.Log("Запущен новый диалог");
         if (dialoguePanel != null)
         {
             dialoguePanel.SetActive(true);
         }
-        currentDialogue = dialogue;
         currentLineIndex = 0;
+        currentDialogue = dialogue;
         isInDialogue = true;
-        canProceedToNextLine = true;
-
-        ShowCurrentLine();
+ 
+        if (currentDialogue.GetLenght() == 0) return;
+        ShowNextLine();
     }
 
-    void ShowCurrentLine()
+    public void ShowNextLine()
     {
+        if (currentLineIndex == currentDialogue.GetLenght())
+        {
+            EndDialogue();
+            return;
+        }
         Debug.Log($"ShowCurrentLine вызван для реплики {currentLineIndex}");
-
+        if(currentDialogue == null)
+        {
+            Debug.Log("Current dialog == null");
+            return;
+        }
         DialogueLine line = currentDialogue.GetDialogueLine(currentLineIndex);
 
-        // ИСПРАВЛЕННАЯ ЧАСТЬ - используем NPCDataSO вместо строки
         if (line.speaker != null)
         {
             speakerText.text = line.speaker.npcName; // Берем имя из NPCDataSO
 
-            // Устанавливаем аватар если есть
             if (speakerAvatar != null && line.speaker.avatar != null)
             {
                 speakerAvatar.sprite = line.speaker.avatar;
@@ -81,43 +88,20 @@ public class DialogueManager : MonoBehaviour
         {
             Debug.LogWarning("Speaker не назначен в диалоге!");
             speakerText.text = "???";
+            speakerAvatar.gameObject.SetActive(false);
         }
 
         dialogueText.text = line.text;
-        canProceedToNextLine = false;
-        Invoke(nameof(EnableLineProgression), 0.1f);
-    }
-
-    void EnableLineProgression()
-    {
-        canProceedToNextLine = true;
-    }
-
-    void ShowNextLine()
-    {
-        if (!canProceedToNextLine) return;
-
-        canProceedToNextLine = false;
         currentLineIndex++;
-
-        // ИСПРАВЛЕНИЕ: проверяем, достигли ли мы конца массива
-        if (currentLineIndex < currentDialogue.GetLenght())
-        {
-            ShowCurrentLine();
-        }
-        else
-        {
-            EndDialogue();
-        }
     }
 
     void EndDialogue()
     {
         isInDialogue = false;
-        canProceedToNextLine = false;
         dialoguePanel.SetActive(false);
-        
+        currentDialogue = null;
         Debug.Log("Диалог завершён");
+        currentLineIndex = 0;
         PlayerMovement.Instance.UnlockPlayerMovement();
     }
 }

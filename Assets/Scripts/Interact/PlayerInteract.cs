@@ -21,12 +21,6 @@ public class PlayerInteract : MonoBehaviour
     {
         Ray ray = mainCamera.ViewportPointToRay(Vector3.one / 2f);
         RaycastHit hit;
-         
-        if (DialogueManager.Instance.isInDialogue)
-        {
-            interactionPanel.SetActive(false);
-            return;
-        }
 
         bool hitSomething = false;
 
@@ -43,6 +37,10 @@ public class PlayerInteract : MonoBehaviour
                 }
             }
         }
-        interactionPanel.SetActive(hitSomething);
+        if (DialogueManager.Instance.isInDialogue)
+        {
+            interactionPanel.SetActive(false);
+        }else 
+            interactionPanel.SetActive(hitSomething);
     }
 }

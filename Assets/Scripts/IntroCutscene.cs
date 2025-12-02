@@ -15,7 +15,7 @@ public class IntroCutscene : MonoBehaviour
 
     public float letterDelay = 0.05f;
     public float phraseDelay = 3f;
-    public string nextScene = "chert_city";
+    public string nextScene = "Scenes/chertanovo";
 
     void Start()
     {

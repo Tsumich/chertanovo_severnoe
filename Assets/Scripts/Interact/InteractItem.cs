@@ -24,6 +24,7 @@ public class InteractItem : MonoBehaviour, IInteractable
         }
         else if (itemType == itemType.InspectItem)
         {
+            Debug.Log("Смотрим что за предмет : " + displayName);
             DialogueManager.Instance.StartDialogue(throughts);
         }
         else if (itemType == itemType.InteractItem)
@@ -32,11 +33,15 @@ public class InteractItem : MonoBehaviour, IInteractable
             {
                 if(Inventory.Instance.HasEnoughtCoins(140))
                 {
-                    Messages.Instance.showDialogWindow("Вы купили коф");
+                    Debug.Log("купили коф! ");
+                    Inventory.Instance.AddItem("coffee", "Кофий", itemIcon);
+                    Inventory.Instance.AddCoins(-140);
                 }
                 else
                 {
-                    Messages.Instance.showDialogWindow("Денег на коф нет");
+                    Debug.Log("no money ");
+                    Messages.Instance.showDialogWindow("Денег на коф нет", () => { 
+                    });
                 }
             });
         }

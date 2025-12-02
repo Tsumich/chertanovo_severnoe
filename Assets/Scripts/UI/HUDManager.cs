@@ -27,10 +27,26 @@ public class HUDManager : MonoBehaviour
 
     void Start()
     {
-        locationText.text = "Чертаново Северное: Кафе" + PlayerInteraction.Instance.lastLocation;
-        // подписываемся на события инвентаря
-        Inventory.Instance.OnCoinsValueEvent += OnCoinsValue;
-        Inventory.Instance.OnTakenItemEvent += OnNewItem;
+        // Проверяем PlayerInteraction.Instance
+        if (PlayerInteraction.Instance != null)
+        {
+            locationText.text = "Чертаново Северное: Кафе " + PlayerInteraction.Instance.lastLocation;
+        }
+        else
+        {
+            locationText.text = "Чертаново Северное: Кафе";
+        }
+
+        // Проверяем Inventory.Instance
+        if (Inventory.Instance != null)
+        {
+            Inventory.Instance.OnCoinsValueEvent += OnCoinsValue;
+            Inventory.Instance.OnTakenItemEvent += OnNewItem;
+        }
+        else
+        {
+            Debug.LogError("Inventory.Instance is null in HUDManager!");
+        }
     }
 
     void Update()
@@ -70,10 +86,9 @@ public class HUDManager : MonoBehaviour
             questTitleText.gameObject.SetActive(true);
         }
 
-        if (questObjectiveText != null)
-        {
-            questObjectiveText.text = next_objective.description;
-        }
+        
+        questObjectiveText.text = next_objective.description;
+        questObjectiveText.gameObject.SetActive(true);
 
         Debug.Log($"HUD: Показан квест '{quest.questName}'");
         Debug.Log($"HUD: Показан квест '{next_objective.description}'");

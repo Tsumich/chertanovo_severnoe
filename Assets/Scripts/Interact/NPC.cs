@@ -12,36 +12,13 @@ public class NPC : MonoBehaviour, IInteractable
     public bool hasDialog = false;
     public DialogueSO lastDialogue;
 
-    [Header("Настройки индикатора")]
-    public Vector3 exclamationOffset = new Vector3(0, 3.5f, 0);
-    public Color exclamationColor = Color.yellow;
-    public float exclamationSize = 7f;
-
-    private bool playerInRange = false;
-    private GameObject exclamationMark; // Будет создаваться автоматически
-
-
     public void Interact()
     {
-        // Добавляем проверку, что диалог действительно завершен
-        if (!DialogueManager.Instance.isInDialogue && DialogueManager.Instance.isDialogueEnding == false)
-            {
-                TryStartDialogue();
-                Debug.Log($"клавиша нажата: E");
-            }
-            else
-            {
-                DialogueManager.Instance.isDialogueEnding = false;
-            }        
+        TryStartDialogue();          
     }
-
-
 
     void TryStartDialogue()
     {
-        
-        if (!DialogueManager.Instance.isInDialogue )
-        {
             if (QuestManager.Instance.activeQuest)
             {
                 Debug.Log("has active");
@@ -70,15 +47,31 @@ public class NPC : MonoBehaviour, IInteractable
             }
             else
             {
-                Debug.Log("121");
+
                 DialogueManager.Instance.StartDialogue(dialogue);
             }
-        }
+         
         
     }
 
     public string GetHintToInteract()
     {
         return "Нажмите E, чтобы поговорить с <color=yellow>" + npcName + " </color>";
+    }
+
+    public void StartDialogue(DialogueSO dialogue)
+    {
+        if (DialogueManager.Instance == null)
+        {
+            Debug.LogError("DialogueManager.Instance is null!");
+            return;
+        }
+
+        if (dialogue == null)
+        {
+            Debug.LogError($"DialogueSO is null for NPC: {gameObject.name}");
+            return;
+        }
+        DialogueManager.Instance.StartDialogue(dialogue);
     }
 }
