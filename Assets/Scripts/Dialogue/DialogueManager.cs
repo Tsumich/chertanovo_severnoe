@@ -18,6 +18,8 @@ public class DialogueManager : MonoBehaviour
     public int currentLineIndex;
     public bool isInDialogue = false;
 
+    private System.Action callbackFunction;
+
     public bool isDialogueEnding = false;
 
     void Awake()
@@ -28,10 +30,12 @@ public class DialogueManager : MonoBehaviour
         Instance = this;
     }
 
-    public void StartDialogue(IDialogueSO dialogue)
+    public void StartDialogue(IDialogueSO dialogue, System.Action callbackFunction = null)
     {
         PlayerMovement.Instance.LockPlayerMovement();
         Debug.Log($"StartDialogue вызван");
+
+        if(this.callbackFunction == null) this.callbackFunction = callbackFunction;
 
         if (dialogue == null)
         {
@@ -98,7 +102,9 @@ public class DialogueManager : MonoBehaviour
     void EndDialogue()
     {
         isInDialogue = false;
+        callbackFunction?.Invoke();
         dialoguePanel.SetActive(false);
+        this.callbackFunction = null;
         currentDialogue = null;
         Debug.Log("Диалог завершён");
         currentLineIndex = 0;

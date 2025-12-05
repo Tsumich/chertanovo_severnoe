@@ -22,22 +22,24 @@ public class NPC : MonoBehaviour, IInteractable
             if (QuestManager.Instance.activeQuest)
             {
                 Debug.Log("has active");
-                if (this.id == 1) DialogueManager.Instance.StartDialogue(QuestManager.Instance.activeQuest.KalinaLine);
+                if (this.id == 1 && QuestManager.Instance.activeQuest.KalinaLine != null) DialogueManager.Instance.StartDialogue(QuestManager.Instance.activeQuest.KalinaLine);
                 else 
                 {
                     QuestSO active_quest = QuestManager.Instance.activeQuest;
                     QuestObjective firstUncompleted = active_quest.objectives
                         .FirstOrDefault(objective => 
                             !objective.isCompleted);
-                    Debug.Log(firstUncompleted.objectiveType);
                     if (firstUncompleted.objectiveType != ObjectiveType.TalkToNPC) return;
                     if (firstUncompleted != null)
                     {
-                        DialogueManager.Instance.StartDialogue(firstUncompleted.startDialogue);
-                        if (firstUncompleted.relatedNPCs == this.id)
+                        DialogueManager.Instance.StartDialogue(firstUncompleted.startDialogue, () =>
                         {
-                            QuestManager.Instance.Complete_objective(active_quest, firstUncompleted);
-                        }    
+                            if (firstUncompleted.relatedNPCs == this.id)
+                            {
+                                QuestManager.Instance.Complete_objective(active_quest, firstUncompleted);
+                            }
+                        });
+                          
                     }
                     else
                     {

@@ -1,31 +1,37 @@
-// LightingManager.cs
+// LightFixer.cs - повесьте ЭТОТ скрипт на Directional Light
 using UnityEngine;
 
-public class LightingManager : MonoBehaviour
+public class LightFixer : MonoBehaviour
 {
-    [Header("Освещение")]
-    public Light directionalLight; // Основной источник света
-    public Color dayColor = Color.white;
-    public Color eveningColor = new Color(1f, 0.8f, 0.6f); // Тёплый оранжевый
-    public float eveningIntensity = 0.5f;
-
     void Start()
     {
-        SetEveningLighting();
-    }
+        Debug.Log("LightFixer on: " + gameObject.name);
 
-    void SetEveningLighting()
-    {
-        if (directionalLight != null)
+        Light light = GetComponent<Light>();
+        if (light != null)
         {
-            directionalLight.color = eveningColor;
-            directionalLight.intensity = eveningIntensity;
-            directionalLight.transform.rotation = Quaternion.Euler(20f, -30f, 0f); // Низкое солнце
+            light.color = Color.magenta; // ФИОЛЕТОВЫЙ
+            light.intensity = 5f; // СВЕРХЯРКИЙ
+            light.transform.rotation = Quaternion.Euler(20, -30, 0);
+
+            Debug.Log($"Light DIRECTLY set to: {light.color}");
         }
 
-        RenderSettings.ambientLight = new Color(0.3f, 0.3f, 0.4f); // Синеватый ambient
         RenderSettings.fog = true;
-        RenderSettings.fogColor = new Color(0.3f, 0.3f, 0.35f); // СЕРЫЙ туман вместо фиолетового
-        RenderSettings.fogDensity = 0.05f;
+        RenderSettings.fogColor = Color.yellow; // ЖЁЛТЫЙ туман
+        RenderSettings.fogDensity = 0.3f;
+    }
+
+    void Update()
+    {
+        // Мерцание для проверки
+        if (Time.time % 1f < 0.1f)
+        {
+            Light light = GetComponent<Light>();
+            if (light != null)
+            {
+                light.intensity = Random.Range(3f, 8f);
+            }
+        }
     }
 }

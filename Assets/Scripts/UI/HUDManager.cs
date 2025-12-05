@@ -2,6 +2,7 @@
 using TMPro;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class HUDManager : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class HUDManager : MonoBehaviour
     public TextMeshProUGUI locationText;
     public TextMeshProUGUI questTitleText;
     public TextMeshProUGUI questObjectiveText;
+
+    public GameObject menu;
 
     [Header("Last actions or events (yellow panel)")]
     public TextMeshProUGUI yellowPanelText;
@@ -30,7 +33,7 @@ public class HUDManager : MonoBehaviour
         // Проверяем PlayerInteraction.Instance
         if (PlayerInteraction.Instance != null)
         {
-            locationText.text = "Чертаново Северное: Кафе " + PlayerInteraction.Instance.lastLocation;
+            locationText.text = "Чертаново Северное: Кафе ";
         }
         else
         {
@@ -47,11 +50,17 @@ public class HUDManager : MonoBehaviour
         {
             Debug.LogError("Inventory.Instance is null in HUDManager!");
         }
+        setMenuVisible(false);
     }
 
     void Update()
     {
-        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            clickGoToMenu();
+        }
+
+            deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
         float fps = 1.0f / deltaTime;
         if (fpsText != null)
         {
@@ -114,5 +123,33 @@ public class HUDManager : MonoBehaviour
     {
         if (locationText != null)
             locationText.text = locationName;
+    }
+
+    public void setMenuVisible(bool isvisible)
+    {
+        menu.SetActive(isvisible);
+    }
+
+    public void clickGoToMenu()
+    {
+        PlayerMovement.Instance.LockPlayerMovement();
+        setMenuVisible(true);
+    }
+
+    public void clickCloseMenu()
+    {
+        PlayerMovement.Instance.UnlockPlayerMovement();
+        setMenuVisible(false);
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
+    public void GoToMainMenu()
+    {
+        SceneManager.LoadScene("Scenes/main_menu");
+
     }
 } 
